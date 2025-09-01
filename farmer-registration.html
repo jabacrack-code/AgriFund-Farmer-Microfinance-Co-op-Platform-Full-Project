@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Registration - AgriFund</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fas fa-seedling"></i>
+                <span>AgriFund</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="farmer-registration.html">For Farmers</a></li>
+                <li><a href="investor-dashboard.html">For Investors</a></li>
+                <li><a href="auth.html" class="btn-login">Login</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="dashboard-header">
+            <div class="container">
+                <h1><i class="fas fa-tractor"></i> Farmer Dashboard</h1>
+                <p>Submit your loan request and track your funding progress</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <!-- Dashboard Stats for logged-in farmers -->
+            <div class="dashboard-stats" id="farmerStats" style="display: none;">
+                <!-- Stats will be populated by JavaScript -->
+            </div>
+
+            <div class="form-container">
+                <div class="form-card">
+                    <h2><i class="fas fa-file-alt"></i> Loan Request Form</h2>
+                    <p>Fill out this form to request funding for your agricultural needs.</p>
+                    
+                    <form id="farmerRegistrationForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="farmSize">Farm Size (acres) *</label>
+                                <input type="number" id="farmSize" name="farmSize" step="0.1" min="0.1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="location">Location *</label>
+                                <select id="location" name="location" required>
+                                    <option value="">Select County</option>
+                                    <option value="Kiambu">Kiambu</option>
+                                    <option value="Nakuru">Nakuru</option>
+                                    <option value="Uasin Gishu">Uasin Gishu</option>
+                                    <option value="Trans Nzoia">Trans Nzoia</option>
+                                    <option value="Meru">Meru</option>
+                                    <option value="Embu">Embu</option>
+                                    <option value="Machakos">Machakos</option>
+                                    <option value="Kitui">Kitui</option>
+                                    <option value="Kakamega">Kakamega</option>
+                                    <option value="Bungoma">Bungoma</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="cropType">Primary Crop *</label>
+                                <select id="cropType" name="cropType" required>
+                                    <option value="">Select Crop</option>
+                                    <option value="maize">Maize</option>
+                                    <option value="beans">Beans</option>
+                                    <option value="potatoes">Potatoes</option>
+                                    <option value="tomatoes">Tomatoes</option>
+                                    <option value="onions">Onions</option>
+                                    <option value="cabbage">Cabbage</option>
+                                    <option value="carrots">Carrots</option>
+                                    <option value="coffee">Coffee</option>
+                                    <option value="tea">Tea</option>
+                                    <option value="wheat">Wheat</option>
+                                    <option value="rice">Rice</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="experience">Farming Experience (years) *</label>
+                                <input type="number" id="experience" name="experience" min="0" max="50" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="loanAmount">Loan Amount Requested (USD) *</label>
+                                <input type="number" id="loanAmount" name="loanAmount" min="100" max="50000" step="10" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="repaymentPeriod">Repayment Period (months) *</label>
+                                <select id="repaymentPeriod" name="repaymentPeriod" required>
+                                    <option value="">Select Period</option>
+                                    <option value="3">3 months</option>
+                                    <option value="6">6 months</option>
+                                    <option value="9">9 months</option>
+                                    <option value="12">12 months</option>
+                                    <option value="18">18 months</option>
+                                    <option value="24">24 months</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="purpose">Loan Purpose *</label>
+                            <select id="purpose" name="purpose" required>
+                                <option value="">Select Purpose</option>
+                                <option value="seeds">Seeds Purchase</option>
+                                <option value="fertilizers">Fertilizers & Chemicals</option>
+                                <option value="equipment">Farm Equipment</option>
+                                <option value="irrigation">Irrigation System</option>
+                                <option value="land preparation">Land Preparation</option>
+                                <option value="harvest">Harvest & Post-harvest</option>
+                                <option value="livestock">Livestock Purchase</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="previousLoans">Previous Loan Repayment History</label>
+                            <select id="previousLoans" name="previousLoans">
+                                <option value="none">No Previous Loans</option>
+                                <option value="excellent">Excellent (Always on time)</option>
+                                <option value="good">Good (Mostly on time)</option>
+                                <option value="fair">Fair (Sometimes late)</option>
+                                <option value="poor">Poor (Often late)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="additionalInfo">Additional Information</label>
+                            <textarea id="additionalInfo" name="additionalInfo" rows="4" placeholder="Tell us more about your farming plans, challenges, or any other relevant information..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            Submit Loan Request
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Farmer's existing loans section -->
+            <div class="form-container">
+                <div class="form-card">
+                    <h2><i class="fas fa-list"></i> My Loan Requests</h2>
+                    <div id="farmerLoans">
+                        <p>Please login to view your loan requests.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <i class="fas fa-seedling"></i>
+                    <span>AgriFund</span>
+                    <p>Connecting farmers and investors for sustainable agriculture</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="farmer-registration.html">For Farmers</a></li>
+                        <li><a href="investor-dashboard.html">For Investors</a></li>
+                        <li><a href="analytics.html">Analytics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> info@agrifund.ke</p>
+                    <p><i class="fas fa-phone"></i> +254 700 000 000</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 AgriFund. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Initialize farmer dashboard when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is logged in
+            if (window.agrifund && window.agrifund.currentUser) {
+                if (window.agrifund.currentUser.type === 'farmer') {
+                    loadDashboardData();
+                    document.getElementById('farmerStats').style.display = 'grid';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

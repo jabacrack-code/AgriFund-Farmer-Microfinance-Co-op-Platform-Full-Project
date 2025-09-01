@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard - AgriFund</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fas fa-seedling"></i>
+                <span>AgriFund</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="farmer-registration.html">For Farmers</a></li>
+                <li><a href="investor-dashboard.html">For Investors</a></li>
+                <li><a href="analytics.html">Analytics</a></li>
+                <li><a href="auth.html" class="btn-login">Login</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="dashboard-header">
+            <div class="container">
+                <h1><i class="fas fa-chart-pie"></i> Analytics Dashboard</h1>
+                <p>Comprehensive insights into platform performance and impact metrics</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <!-- Key Performance Indicators -->
+            <div class="dashboard-stats">
+                <div class="stat-card-small">
+                    <h3 id="totalPlatformInvestment">$0</h3>
+                    <p>Total Platform Investment</p>
+                </div>
+                <div class="stat-card-small">
+                    <h3 id="totalActiveFarmers">0</h3>
+                    <p>Active Farmers</p>
+                </div>
+                <div class="stat-card-small">
+                    <h3 id="totalActiveInvestors">0</h3>
+                    <p>Active Investors</p>
+                </div>
+                <div class="stat-card-small">
+                    <h3 id="platformSuccessRate">0%</h3>
+                    <p>Funding Success Rate</p>
+                </div>
+            </div>
+
+            <!-- Investment Trends -->
+            <section>
+                <div class="card">
+                    <h2><i class="fas fa-trending-up"></i> Investment Trends</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                        <div>
+                            <h4>Monthly Investment Volume</h4>
+                            <div style="height: 300px; position: relative;">
+                                <canvas id="monthlyInvestmentChart"></canvas>
+                            </div>
+                        </div>
+                        <div>
+                            <h4>Investment by Crop Type</h4>
+                            <div style="height: 300px; position: relative;">
+                                <canvas id="cropInvestmentChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Geographic Distribution -->
+            <section>
+                <div class="card">
+                    <h2><i class="fas fa-map-marked-alt"></i> Geographic Distribution</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                        <div>
+                            <h4>Farmers by County</h4>
+                            <div style="height: 300px; position: relative;">
+                                <canvas id="farmerLocationChart"></canvas>
+                            </div>
+                        </div>
+                        <div>
+                            <h4>Investment Distribution by Region</h4>
+                            <div id="regionInvestmentTable" style="height: 300px; overflow-y: auto;">
+                                <!-- Table will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Risk Analysis -->
+            <section>
+                <div class="card">
+                    <h2><i class="fas fa-shield-alt"></i> Risk Analysis</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                        <div>
+                            <h4>Risk Score Distribution</h4>
+                            <div style="height: 300px; position: relative;">
+                                <canvas id="riskDistributionChart"></canvas>
+                            </div>
+                        </div>
+                        <div>
+                            <h4>Repayment Performance by Risk Level</h4>
+                            <div style="height: 300px; position: relative;">
+                                <canvas id="repaymentPerformanceChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Farm Size Analysis -->
+            <section>
+                <div class="card">
+                    <h2><i class="fas fa-chart-area"></i> Farm Size Analysis</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                        <div>
+                            <h4>Average Loan Amount by Farm Size</h4>
+                            <div style="height: 300px; position: relative;">
+                                <canvas id="farmSizeLoanChart"></canvas>
+                            </div>
+                        </div>
+                        <div>
+                            <h4>Farm Size Distribution</h4>
+                            <div style="height: 300px; position: relative;">
+                                <canvas id="farmSizeDistributionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Investor Insights -->
+            <section>
+                <div class="card">
+                    <h2><i class="fas fa-users"></i> Investor Insights</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                        <div style="text-align: center; padding: 2rem; background: var(--cream); border-radius: var(--border-radius);">
+                            <h3 id="avgInvestmentSize">$0</h3>
+                            <p>Average Investment Size</p>
+                        </div>
+                        <div style="text-align: center; padding: 2rem; background: var(--cream); border-radius: var(--border-radius);">
+                            <h3 id="avgInvestorROI">0%</h3>
+                            <p>Average Investor ROI</p>
+                        </div>
+                        <div style="text-align: center; padding: 2rem; background: var(--cream); border-radius: var(--border-radius);">
+                            <h3 id="avgPortfolioSize">0</h3>
+                            <p>Average Portfolio Size</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Impact Metrics -->
+            <section>
+                <div class="card">
+                    <h2><i class="fas fa-heart"></i> Social Impact Metrics</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                        <div style="text-align: center; padding: 2rem; background: var(--primary-green); color: white; border-radius: var(--border-radius);">
+                            <h3 id="totalAcresSupported">0</h3>
+                            <p>Total Acres Supported</p>
+                        </div>
+                        <div style="text-align: center; padding: 2rem; background: var(--secondary-green); color: white; border-radius: var(--border-radius);">
+                            <h3 id="estimatedFoodProduction">0</h3>
+                            <p>Est. Food Production (tons)</p>
+                        </div>
+                        <div style="text-align: center; padding: 2rem; background: var(--accent-green); color: white; border-radius: var(--border-radius);">
+                            <h3 id="householdsFed">0</h3>
+                            <p>Households Fed</p>
+                        </div>
+                        <div style="text-align: center; padding: 2rem; background: var(--light-green); color: white; border-radius: var(--border-radius);">
+                            <h3 id="carbonOffset">0</h3>
+                            <p>CO2 Offset (tons)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seasonal Trends -->
+            <section>
+                <div class="card">
+                    <h2><i class="fas fa-calendar-alt"></i> Seasonal Trends</h2>
+                    <div style="margin-top: 2rem;">
+                        <h4>Loan Requests by Season</h4>
+                        <div style="height: 400px; position: relative;">
+                            <canvas id="seasonalTrendsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Platform Growth -->
+            <section>
+                <div class="card">
+                    <h2><i class="fas fa-rocket"></i> Platform Growth</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; margin-top: 2rem;">
+                        <div>
+                            <h4>User Growth Over Time</h4>
+                            <div style="height: 300px; position: relative;">
+                                <canvas id="userGrowthChart"></canvas>
+                            </div>
+                        </div>
+                        <div>
+                            <h4>Platform Milestones</h4>
+                            <div style="height: 300px; overflow-y: auto; padding: 1rem; background: var(--cream); border-radius: var(--border-radius);">
+                                <div id="milestonesList">
+                                    <!-- Milestones will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <i class="fas fa-seedling"></i>
+                    <span>AgriFund</span>
+                    <p>Connecting farmers and investors for sustainable agriculture</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="farmer-registration.html">For Farmers</a></li>
+                        <li><a href="investor-dashboard.html">For Investors</a></li>
+                        <li><a href="analytics.html">Analytics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> info@agrifund.ke</p>
+                    <p><i class="fas fa-phone"></i> +254 700 000 000</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 AgriFund. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Analytics Dashboard Functionality
+        let charts = {};
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAnalyticsData();
+            initializeCharts();
+        });
+
+        function loadAnalyticsData() {
+            if (!window.agrifund) return;
+
+            const farmers = window.agrifund.getFarmers();
+            const users = window.agrifund.getUsers();
+            const portfolios = JSON.parse(localStorage.getItem('agrifund_portfolios')) || {};
+
+            // Calculate KPIs
+            const totalInvestment = farmers.reduce((sum, f) => sum + f.currentFunding, 0);
+            const activeFarmers = farmers.filter(f => f.status === 'active' || f.status === 'funded').length;
+            const activeInvestors = Object.keys(portfolios).length;
+            const fundedFarmers = farmers.filter(f => f.status === 'funded' || f.status === 'completed').length;
+            const successRate = farmers.length > 0 ? (fundedFarmers / farmers.length) * 100 : 0;
+
+            // Update KPI displays
+            document.getElementById('totalPlatformInvestment').textContent = window.agrifund.formatCurrency(totalInvestment);
+            document.getElementById('totalActiveFarmers').textContent = activeFarmers;
+            document.getElementById('totalActiveInvestors').textContent = activeInvestors;
+            document.getElementById('platformSuccessRate').textContent = Math.round(successRate) + '%';
+
+            // Calculate additional metrics
+            calculateInvestorInsights(portfolios, farmers);
+            calculateImpactMetrics(farmers);
+            generateMilestones(farmers, users);
+        }
+
+        function calculateInvestorInsights(portfolios, farmers) {
+            const allInvestments = Object.values(portfolios).flat();
+            
+            const avgInvestmentSize = allInvestments.length > 0 
+                ? allInvestments.reduce((sum, inv) => sum + inv.amount, 0) / allInvestments.length 
+                : 0;
+            
+            const avgPortfolioSize = Object.keys(portfolios).length > 0 
+                ? allInvestments.length / Object.keys(portfolios).length 
+                : 0;
+
+            document.getElementById('avgInvestmentSize').textContent = window.agrifund.formatCurrency(avgInvestmentSize);
+            document.getElementById('avgInvestorROI').textContent = '12%'; // Mock ROI
+            document.getElementById('avgPortfolioSize').textContent = Math.round(avgPortfolioSize);
+        }
+
+        function calculateImpactMetrics(farmers) {
+            const totalAcres = farmers.reduce((sum, f) => sum + f.farmSize, 0);
+            const estimatedProduction = totalAcres * 2.5; // Assume 2.5 tons per acre
+            const householdsFed = Math.round(estimatedProduction * 8); // Assume 8 households per ton
+            const carbonOffset = Math.round(totalAcres * 2.3); // Assume 2.3 tons CO2 per acre
+
+            document.getElementById('totalAcresSupported').textContent = totalAcres.toLocaleString();
+            document.getElementById('estimatedFoodProduction').textContent = Math.round(estimatedProduction).toLocaleString();
+            document.getElementById('householdsFed').textContent = householdsFed.toLocaleString();
+            document.getElementById('carbonOffset').textContent = carbonOffset.toLocaleString();
+        }
+
+        function generateMilestones(farmers, users) {
+            const milestones = [];
+            
+            if (farmers.length >= 1) milestones.push({ text: 'First farmer registered', date: farmers[0]?.createdAt });
+            if (farmers.length >= 10) milestones.push({ text: '10 farmers reached', achieved: true });
+            if (farmers.length >= 50) milestones.push({ text: '50 farmers reached', achieved: true });
+            if (farmers.length >= 100) milestones.push({ text: '100 farmers reached', achieved: true });
+            
+            const totalInvestment = farmers.reduce((sum, f) => sum + f.currentFunding, 0);
+            if (totalInvestment >= 1000) milestones.push({ text: '$1,000 total investment', achieved: true });
+            if (totalInvestment >= 10000) milestones.push({ text: '$10,000 total investment', achieved: true });
+            if (totalInvestment >= 50000) milestones.push({ text: '$50,000 total investment', achieved: true });
+
+            document.getElementById('milestonesList').innerHTML = milestones.map(milestone => `
+                <div style="display: flex; align-items: center; margin-bottom: 1rem; padding: 0.5rem; background: white; border-radius: 8px;">
+                    <i class="fas fa-${milestone.achieved ? 'check-circle' : 'clock'}" style="color: ${milestone.achieved ? 'var(--accent-green)' : 'var(--light-text)'}; margin-right: 0.5rem;"></i>
+                    <span>${milestone.text}</span>
+                </div>
+            `).join('');
+        }
+
+        function initializeCharts() {
+            if (typeof Chart === 'undefined') {
+                console.log('Chart.js not loaded');
+                return;
+            }
+
+            const farmers = window.agrifund.getFarmers();
+            const portfolios = JSON.parse(localStorage.getItem('agrifund_portfolios')) || {};
+
+            // Monthly Investment Chart
+            initMonthlyInvestmentChart(farmers);
+            
+            // Crop Investment Chart
+            initCropInvestmentChart(farmers);
+            
+            // Farmer Location Chart
+            initFarmerLocationChart(farmers);
+            
+            // Risk Distribution Chart
+            initRiskDistributionChart(farmers);
+            
+            // Repayment Performance Chart
+            initRepaymentPerformanceChart(farmers);
+            
+            // Farm Size Analysis Charts
+            initFarmSizeCharts(farmers);
+            
+            // Seasonal Trends Chart
+            initSeasonalTrendsChart(farmers);
+            
+            // User Growth Chart
+            initUserGrowthChart(farmers);
+
+            // Region Investment Table
+            generateRegionInvestmentTable(farmers);
+        }
+
+        function initMonthlyInvestmentChart(farmers) {
+            const ctx = document.getElementById('monthlyInvestmentChart');
+            if (!ctx) return;
+
+            // Group farmers by month
+            const monthlyData = farmers.reduce((acc, farmer) => {
+                const month = new Date(farmer.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+                acc[month] = (acc[month] || 0) + farmer.currentFunding;
+                return acc;
+            }, {});
+
+            const labels = Object.keys(monthlyData).slice(-6); // Last 6 months
+            const data = labels.map(month => monthlyData[month] || 0);
+
+            charts.monthlyInvestment = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Investment Volume ($)',
+                        data: data,
+                        borderColor: 'rgb(45, 90, 39)',
+                        backgroundColor: 'rgba(45, 90, 39, 0.1)',
+                        tension: 0.1,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initCropInvestmentChart(farmers) {
+            const ctx = document.getElementById('cropInvestmentChart');
+            if (!ctx) return;
+
+            const cropData = farmers.reduce((acc, farmer) => {
+                acc[farmer.cropType] = (acc[farmer.cropType] || 0) + farmer.currentFunding;
+                return acc;
+            }, {});
+
+            const labels = Object.keys(cropData);
+            const data = Object.values(cropData);
+            const colors = [
+                '#2d5a27', '#4a7c59', '#7fb069', '#a7c957', 
+                '#8b4513', '#6b8e23', '#9acd32', '#556b2f'
+            ];
+
+            charts.cropInvestment = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colors.slice(0, labels.length),
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        function initFarmerLocationChart(farmers) {
+            const ctx = document.getElementById('farmerLocationChart');
+            if (!ctx) return;
+
+            const locationData = farmers.reduce((acc, farmer) => {
+                acc[farmer.location] = (acc[farmer.location] || 0) + 1;
+                return acc;
+            }, {});
+
+            const labels = Object.keys(locationData);
+            const data = Object.values(locationData);
+
+            charts.farmerLocation = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Number of Farmers',
+                        data: data,
+                        backgroundColor: 'rgba(127, 176, 105, 0.8)',
+                        borderColor: 'rgba(127, 176, 105, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initRiskDistributionChart(farmers) {
+            const ctx = document.getElementById('riskDistributionChart');
+            if (!ctx) return;
+
+            const riskData = farmers.reduce((acc, farmer) => {
+                if (farmer.riskScore >= 80) acc.low++;
+                else if (farmer.riskScore >= 60) acc.medium++;
+                else acc.high++;
+                return acc;
+            }, { low: 0, medium: 0, high: 0 });
+
+            charts.riskDistribution = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Low Risk (80+)', 'Medium Risk (60-79)', 'High Risk (<60)'],
+                    datasets: [{
+                        data: [riskData.low, riskData.medium, riskData.high],
+                        backgroundColor: ['#28a745', '#ffc107', '#dc3545'],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        function initRepaymentPerformanceChart(farmers) {
+            const ctx = document.getElementById('repaymentPerformanceChart');
+            if (!ctx) return;
+
+            const riskGroups = {
+                'Low Risk': { total: 0, avgRepayment: 0 },
+                'Medium Risk': { total: 0, avgRepayment: 0 },
+                'High Risk': { total: 0, avgRepayment: 0 }
+            };
+
+            farmers.forEach(farmer => {
+                let group;
+                if (farmer.riskScore >= 80) group = 'Low Risk';
+                else if (farmer.riskScore >= 60) group = 'Medium Risk';
+                else group = 'High Risk';
+
+                riskGroups[group].total++;
+                riskGroups[group].avgRepayment += (farmer.repaymentProgress || 0);
+            });
+
+            // Calculate averages
+            Object.keys(riskGroups).forEach(group => {
+                if (riskGroups[group].total > 0) {
+                    riskGroups[group].avgRepayment /= riskGroups[group].total;
+                }
+            });
+
+            const labels = Object.keys(riskGroups);
+            const data = labels.map(group => riskGroups[group].avgRepayment);
+
+            charts.repaymentPerformance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Average Repayment Progress (%)',
+                        data: data,
+                        backgroundColor: ['rgba(40, 167, 69, 0.8)', 'rgba(255, 193, 7, 0.8)', 'rgba(220, 53, 69, 0.8)'],
+                        borderColor: ['rgba(40, 167, 69, 1)', 'rgba(255, 193, 7, 1)', 'rgba(220, 53, 69, 1)'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initFarmSizeCharts(farmers) {
+            // Farm Size vs Loan Amount
+            const farmSizeLoanCtx = document.getElementById('farmSizeLoanChart');
+            if (farmSizeLoanCtx) {
+                const sizeGroups = {
+                    'Small (< 2 acres)': { total: 0, avgLoan: 0 },
+                    'Medium (2-5 acres)': { total: 0, avgLoan: 0 },
+                    'Large (> 5 acres)': { total: 0, avgLoan: 0 }
+                };
+
+                farmers.forEach(farmer => {
+                    let group;
+                    if (farmer.farmSize < 2) group = 'Small (< 2 acres)';
+                    else if (farmer.farmSize <= 5) group = 'Medium (2-5 acres)';
+                    else group = 'Large (> 5 acres)';
+
+                    sizeGroups[group].total++;
+                    sizeGroups[group].avgLoan += farmer.targetAmount;
+                });
+
+                Object.keys(sizeGroups).forEach(group => {
+                    if (sizeGroups[group].total > 0) {
+                        sizeGroups[group].avgLoan /= sizeGroups[group].total;
+                    }
+                });
+
+                charts.farmSizeLoan = new Chart(farmSizeLoanCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: Object.keys(sizeGroups),
+                        datasets: [{
+                            label: 'Average Loan Amount ($)',
+                            data: Object.values(sizeGroups).map(g => g.avgLoan),
+                            backgroundColor: 'rgba(74, 124, 89, 0.8)',
+                            borderColor: 'rgba(74, 124, 89, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function(value) {
+                                        return '$' + value.toLocaleString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Farm Size Distribution
+            const farmSizeDistCtx = document.getElementById('farmSizeDistributionChart');
+            if (farmSizeDistCtx) {
+                const distributionData = {
+                    'Small (< 2 acres)': 0,
+                    'Medium (2-5 acres)': 0,
+                    'Large (> 5 acres)': 0
+                };
+
+                farmers.forEach(farmer => {
+                    if (farmer.farmSize < 2) distributionData['Small (< 2 acres)']++;
+                    else if (farmer.farmSize <= 5) distributionData['Medium (2-5 acres)']++;
+                    else distributionData['Large (> 5 acres)']++;
+                });
+
+                charts.farmSizeDistribution = new Chart(farmSizeDistCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(distributionData),
+                        datasets: [{
+                            data: Object.values(distributionData),
+                            backgroundColor: ['#a7c957', '#7fb069', '#4a7c59'],
+                            borderWidth: 2,
+                            borderColor: '#fff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        function initSeasonalTrendsChart(farmers) {
+            const ctx = document.getElementById('seasonalTrendsChart');
+            if (!ctx) return;
+
+            const seasonalData = farmers.reduce((acc, farmer) => {
+                const month = new Date(farmer.createdAt).getMonth();
+                let season;
+                if (month >= 2 && month <= 4) season = 'Spring';
+                else if (month >= 5 && month <= 7) season = 'Summer';
+                else if (month >= 8 && month <= 10) season = 'Fall';
+                else season = 'Winter';
+
+                acc[season] = (acc[season] || 0) + 1;
+                return acc;
+            }, {});
+
+            const seasons = ['Spring', 'Summer', 'Fall', 'Winter'];
+            const data = seasons.map(season => seasonalData[season] || 0);
+
+            charts.seasonalTrends = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: seasons,
+                    datasets: [{
+                        label: 'Loan Requests',
+                        data: data,
+                        borderColor: 'rgb(45, 90, 39)',
+                        backgroundColor: 'rgba(45, 90, 39, 0.1)',
+                        pointBackgroundColor: 'rgb(45, 90, 39)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(45, 90, 39)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initUserGrowthChart(farmers) {
+            const ctx = document.getElementById('userGrowthChart');
+            if (!ctx) return;
+
+            // Simulate cumulative growth
+            const sortedFarmers = farmers.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+            const growthData = [];
+            let cumulativeCount = 0;
+
+            sortedFarmers.forEach((farmer, index) => {
+                cumulativeCount++;
+                const date = new Date(farmer.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                growthData.push({ date, count: cumulativeCount });
+            });
+
+            // Group by month for cleaner display
+            const monthlyGrowth = growthData.reduce((acc, point) => {
+                const month = point.date.split(' ')[0];
+                acc[month] = point.count;
+                return acc;
+            }, {});
+
+            const labels = Object.keys(monthlyGrowth);
+            const data = Object.values(monthlyGrowth);
+
+            charts.userGrowth = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Farmers',
+                        data: data,
+                        borderColor: 'rgb(167, 201, 87)',
+                        backgroundColor: 'rgba(167, 201, 87, 0.1)',
+                        tension: 0.1,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function generateRegionInvestmentTable(farmers) {
+            const regionData = farmers.reduce((acc, farmer) => {
+                if (!acc[farmer.location]) {
+                    acc[farmer.location] = {
+                        farmers: 0,
+                        totalInvestment: 0,
+                        avgLoanSize: 0,
+                        successRate: 0,
+                        funded: 0
+                    };
+                }
+                
+                acc[farmer.location].farmers++;
+                acc[farmer.location].totalInvestment += farmer.currentFunding;
+                acc[farmer.location].avgLoanSize += farmer.targetAmount;
+                
+                if (farmer.status === 'funded' || farmer.status === 'completed') {
+                    acc[farmer.location].funded++;
+                }
+                
+                return acc;
+            }, {});
+
+            // Calculate averages and success rates
+            Object.keys(regionData).forEach(region => {
+                const data = regionData[region];
+                data.avgLoanSize = data.avgLoanSize / data.farmers;
+                data.successRate = (data.funded / data.farmers) * 100;
+            });
+
+            const tableHTML = `
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: var(--primary-green); color: white;">
+                            <th style="padding: 0.8rem; text-align: left; border: 1px solid #ddd;">County</th>
+                            <th style="padding: 0.8rem; text-align: left; border: 1px solid #ddd;">Farmers</th>
+                            <th style="padding: 0.8rem; text-align: left; border: 1px solid #ddd;">Investment</th>
+                            <th style="padding: 0.8rem; text-align: left; border: 1px solid #ddd;">Success Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${Object.entries(regionData)
+                            .sort(([,a], [,b]) => b.totalInvestment - a.totalInvestment)
+                            .map(([region, data]) => `
+                                <tr>
+                                    <td style="padding: 0.8rem; border: 1px solid #ddd;">${region}</td>
+                                    <td style="padding: 0.8rem; border: 1px solid #ddd;">${data.farmers}</td>
+                                    <td style="padding: 0.8rem; border: 1px solid #ddd;">${window.agrifund.formatCurrency(data.totalInvestment)}</td>
+                                    <td style="padding: 0.8rem; border: 1px solid #ddd;">${Math.round(data.successRate)}%</td>
+                                </tr>
+                            `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            document.getElementById('regionInvestmentTable').innerHTML = tableHTML;
+        }
+    </script>
+</body>
+</html>

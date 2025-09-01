@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Tracking - AgriFund</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fas fa-seedling"></i>
+                <span>AgriFund</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="farmer-registration.html">For Farmers</a></li>
+                <li><a href="investor-dashboard.html">For Investors</a></li>
+                <li><a href="analytics.html">Analytics</a></li>
+                <li><a href="auth.html" class="btn-login">Login</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="dashboard-header">
+            <div class="container">
+                <h1><i class="fas fa-chart-line"></i> Loan Tracking</h1>
+                <p>Monitor loan performance and repayment progress</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <!-- Summary Statistics -->
+            <div class="dashboard-stats">
+                <div class="stat-card-small">
+                    <h3 id="totalLoans">0</h3>
+                    <p>Total Active Loans</p>
+                </div>
+                <div class="stat-card-small">
+                    <h3 id="totalAmount">$0</h3>
+                    <p>Total Loan Amount</p>
+                </div>
+                <div class="stat-card-small">
+                    <h3 id="avgRepayment">0%</h3>
+                    <p>Average Repayment Progress</p>
+                </div>
+                <div class="stat-card-small">
+                    <h3 id="onTimeRate">90%</h3>
+                    <p>On-Time Repayment Rate</p>
+                </div>
+            </div>
+
+            <!-- Loan Status Overview -->
+            <section>
+                <div class="card">
+                    <h2><i class="fas fa-list"></i> Loan Status Overview</h2>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                        <div style="text-align: center; padding: 1rem; background: var(--cream); border-radius: var(--border-radius);">
+                            <h3 style="color: #ffc107;" id="pendingLoans">0</h3>
+                            <p>Pending Approval</p>
+                        </div>
+                        <div style="text-align: center; padding: 1rem; background: var(--cream); border-radius: var(--border-radius);">
+                            <h3 style="color: var(--primary-green);" id="activeLoans">0</h3>
+                            <p>Active Funding</p>
+                        </div>
+                        <div style="text-align: center; padding: 1rem; background: var(--cream); border-radius: var(--border-radius);">
+                            <h3 style="color: #17a2b8;" id="fundedLoans">0</h3>
+                            <p>Fully Funded</p>
+                        </div>
+                        <div style="text-align: center; padding: 1rem; background: var(--cream); border-radius: var(--border-radius);">
+                            <h3 style="color: #28a745;" id="completedLoans">0</h3>
+                            <p>Completed</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Detailed Loan Tracking -->
+            <section>
+                <h2><i class="fas fa-table"></i> Detailed Loan Tracking</h2>
+                
+                <!-- Filter and Sort Options -->
+                <div class="card" style="margin-bottom: 2rem;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div class="form-group">
+                            <label for="statusFilter">Filter by Status:</label>
+                            <select id="statusFilter">
+                                <option value="">All Statuses</option>
+                                <option value="active">Active</option>
+                                <option value="funded">Funded</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cropFilter">Filter by Crop:</label>
+                            <select id="cropFilter">
+                                <option value="">All Crops</option>
+                                <option value="maize">Maize</option>
+                                <option value="beans">Beans</option>
+                                <option value="potatoes">Potatoes</option>
+                                <option value="tomatoes">Tomatoes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sortBy">Sort by:</label>
+                            <select id="sortBy">
+                                <option value="date">Date Created</option>
+                                <option value="amount">Loan Amount</option>
+                                <option value="progress">Funding Progress</option>
+                                <option value="repayment">Repayment Progress</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-grid" id="loanTrackingList">
+                    <!-- Loan tracking cards will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Repayment Calendar -->
+            <section>
+                <div class="card">
+                    <h2><i class="fas fa-calendar-check"></i> Repayment Schedule</h2>
+                    <p>Expected repayment dates based on harvest cycles</p>
+                    
+                    <div id="repaymentSchedule">
+                        <!-- Schedule will be populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Performance Metrics -->
+            <section>
+                <div class="card">
+                    <h2><i class="fas fa-chart-bar"></i> Performance Metrics</h2>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 1rem;">
+                        <div>
+                            <h4>Funding Success by Crop Type</h4>
+                            <div id="cropSuccessChart" style="height: 200px; background: var(--cream); border-radius: var(--border-radius); padding: 1rem;">
+                                <canvas id="cropChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4>Monthly Loan Volume</h4>
+                            <div id="volumeChart" style="height: 200px; background: var(--cream); border-radius: var(--border-radius); padding: 1rem;">
+                                <canvas id="volumeChartCanvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <i class="fas fa-seedling"></i>
+                    <span>AgriFund</span>
+                    <p>Connecting farmers and investors for sustainable agriculture</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="farmer-registration.html">For Farmers</a></li>
+                        <li><a href="investor-dashboard.html">For Investors</a></li>
+                        <li><a href="analytics.html">Analytics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> info@agrifund.ke</p>
+                    <p><i class="fas fa-phone"></i> +254 700 000 000</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 AgriFund. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // Loan tracking specific functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            loadLoanTrackingData();
+            initializeCharts();
+            
+            // Add filter functionality
+            const statusFilter = document.getElementById('statusFilter');
+            const cropFilter = document.getElementById('cropFilter');
+            const sortBy = document.getElementById('sortBy');
+            
+            [statusFilter, cropFilter, sortBy].forEach(filter => {
+                filter.addEventListener('change', applyFiltersAndSort);
+            });
+        });
+
+        function loadLoanTrackingData() {
+            if (!window.agrifund) return;
+            
+            const farmers = window.agrifund.getFarmers();
+            
+            // Update summary stats
+            const totalLoans = farmers.length;
+            const totalAmount = farmers.reduce((sum, f) => sum + f.targetAmount, 0);
+            const avgRepayment = farmers.length > 0 ? 
+                farmers.reduce((sum, f) => sum + (f.repaymentProgress || 0), 0) / farmers.length : 0;
+            
+            document.getElementById('totalLoans').textContent = totalLoans;
+            document.getElementById('totalAmount').textContent = window.agrifund.formatCurrency(totalAmount);
+            document.getElementById('avgRepayment').textContent = Math.round(avgRepayment) + '%';
+            
+            // Update status counts
+            const statusCounts = farmers.reduce((acc, f) => {
+                acc[f.status] = (acc[f.status] || 0) + 1;
+                return acc;
+            }, {});
+            
+            document.getElementById('pendingLoans').textContent = statusCounts.pending || 0;
+            document.getElementById('activeLoans').textContent = statusCounts.active || 0;
+            document.getElementById('fundedLoans').textContent = statusCounts.funded || 0;
+            document.getElementById('completedLoans').textContent = statusCounts.completed || 0;
+            
+            // Display loan tracking list
+            displayLoanTrackingList(farmers);
+            
+            // Generate repayment schedule
+            generateRepaymentSchedule(farmers);
+        }
+
+        function displayLoanTrackingList(farmers) {
+            const container = document.getElementById('loanTrackingList');
+            
+            if (farmers.length === 0) {
+                container.innerHTML = `
+                    <div class="card">
+                        <p style="text-align: center; color: var(--light-text);">
+                            <i class="fas fa-info-circle" style="font-size: 2rem; margin-bottom: 1rem;"></i><br>
+                            No loans to track yet.
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = farmers.map(farmer => `
+                <div class="card farmer-card" data-status="${farmer.status}" data-crop="${farmer.cropType}">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h3>${farmer.farmerName}</h3>
+                        <span class="status-badge status-${farmer.status}">${farmer.status.toUpperCase()}</span>
+                    </div>
+                    
+                    <div class="farmer-info">
+                        <div><strong>Crop:</strong> ${farmer.cropType}</div>
+                        <div><strong>Location:</strong> ${farmer.location}</div>
+                        <div><strong>Amount:</strong> ${window.agrifund.formatCurrency(farmer.targetAmount)}</div>
+                        <div><strong>Created:</strong> ${window.agrifund.formatDate(farmer.createdAt)}</div>
+                    </div>
+                    
+                    <div style="margin: 1rem 0;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span>Funding Progress</span>
+                            <span>${Math.round((farmer.currentFunding / farmer.targetAmount) * 100)}%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${(farmer.currentFunding / farmer.targetAmount) * 100}%"></div>
+                        </div>
+                    </div>
+                    
+                    ${farmer.status === 'funded' || farmer.status === 'completed' ? `
+                        <div style="margin: 1rem 0;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Repayment Progress</span>
+                                <span>${farmer.repaymentProgress || 0}%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${farmer.repaymentProgress || 0}%"></div>
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--light-text);">
+                        <div><strong>Investors:</strong> ${farmer.investors.length}</div>
+                        <div><strong>Risk Score:</strong> 
+                            <span class="risk-score risk-${farmer.riskScore >= 80 ? 'low' : farmer.riskScore >= 60 ? 'medium' : 'high'}">
+                                ${farmer.riskScore}/100
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function generateRepaymentSchedule(farmers) {
+            const fundedFarmers = farmers.filter(f => f.status === 'funded' || f.status === 'completed');
+            const scheduleContainer = document.getElementById('repaymentSchedule');
+            
+            if (fundedFarmers.length === 0) {
+                scheduleContainer.innerHTML = '<p>No active repayments scheduled.</p>';
+                return;
+            }
+            
+            // Generate expected repayment dates (simplified)
+            const scheduleItems = fundedFarmers.map(farmer => {
+                const createdDate = new Date(farmer.createdAt);
+                const expectedDate = new Date(createdDate);
+                expectedDate.setMonth(expectedDate.getMonth() + farmer.repaymentPeriod);
+                
+                return {
+                    farmer: farmer.farmerName,
+                    crop: farmer.cropType,
+                    amount: farmer.targetAmount,
+                    expectedDate: expectedDate,
+                    progress: farmer.repaymentProgress || 0,
+                    status: farmer.status
+                };
+            });
+            
+            // Sort by expected date
+            scheduleItems.sort((a, b) => a.expectedDate - b.expectedDate);
+            
+            scheduleContainer.innerHTML = `
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: var(--cream);">
+                                <th style="padding: 0.8rem; text-align: left; border: 1px solid #ddd;">Farmer</th>
+                                <th style="padding: 0.8rem; text-align: left; border: 1px solid #ddd;">Crop</th>
+                                <th style="padding: 0.8rem; text-align: left; border: 1px solid #ddd;">Amount</th>
+                                <th style="padding: 0.8rem; text-align: left; border: 1px solid #ddd;">Expected Date</th>
+                                <th style="padding: 0.8rem; text-align: left; border: 1px solid #ddd;">Progress</th>
+                                <th style="padding: 0.8rem; text-align: left; border: 1px solid #ddd;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${scheduleItems.map(item => `
+                                <tr>
+                                    <td style="padding: 0.8rem; border: 1px solid #ddd;">${item.farmer}</td>
+                                    <td style="padding: 0.8rem; border: 1px solid #ddd;">${item.crop}</td>
+                                    <td style="padding: 0.8rem; border: 1px solid #ddd;">${window.agrifund.formatCurrency(item.amount)}</td>
+                                    <td style="padding: 0.8rem; border: 1px solid #ddd;">${item.expectedDate.toLocaleDateString()}</td>
+                                    <td style="padding: 0.8rem; border: 1px solid #ddd;">${item.progress}%</td>
+                                    <td style="padding: 0.8rem; border: 1px solid #ddd;">
+                                        <span class="status-badge status-${item.status}">${item.status}</span>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function applyFiltersAndSort() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const cropFilter = document.getElementById('cropFilter').value;
+            const sortBy = document.getElementById('sortBy').value;
+            
+            let farmers = window.agrifund.getFarmers();
+            
+            // Apply filters
+            if (statusFilter) {
+                farmers = farmers.filter(f => f.status === statusFilter);
+            }
+            if (cropFilter) {
+                farmers = farmers.filter(f => f.cropType.toLowerCase() === cropFilter.toLowerCase());
+            }
+            
+            // Apply sorting
+            farmers.sort((a, b) => {
+                switch (sortBy) {
+                    case 'amount':
+                        return b.targetAmount - a.targetAmount;
+                    case 'progress':
+                        return (b.currentFunding / b.targetAmount) - (a.currentFunding / a.targetAmount);
+                    case 'repayment':
+                        return (b.repaymentProgress || 0) - (a.repaymentProgress || 0);
+                    default: // date
+                        return new Date(b.createdAt) - new Date(a.createdAt);
+                }
+            });
+            
+            displayLoanTrackingList(farmers);
+        }
+
+        function initializeCharts() {
+            // Only initialize if Chart.js is loaded
+            if (typeof Chart === 'undefined') {
+                console.log('Chart.js not loaded');
+                return;
+            }
+            
+            const farmers = window.agrifund.getFarmers();
+            
+            // Crop success chart
+            const cropData = farmers.reduce((acc, f) => {
+                if (!acc[f.cropType]) {
+                    acc[f.cropType] = { total: 0, funded: 0 };
+                }
+                acc[f.cropType].total++;
+                if (f.status === 'funded' || f.status === 'completed') {
+                    acc[f.cropType].funded++;
+                }
+                return acc;
+            }, {});
+            
+            const cropLabels = Object.keys(cropData);
+            const cropSuccessRates = cropLabels.map(crop => 
+                cropData[crop].total > 0 ? (cropData[crop].funded / cropData[crop].total) * 100 : 0
+            );
+            
+            const cropCtx = document.getElementById('cropChart');
+            if (cropCtx) {
+                new Chart(cropCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: cropLabels,
+                        datasets: [{
+                            label: 'Success Rate (%)',
+                            data: cropSuccessRates,
+                            backgroundColor: 'rgba(127, 176, 105, 0.8)',
+                            borderColor: 'rgba(127, 176, 105, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Add CSS for status badges
+        const style = document.createElement('style');
+        style.textContent = `
+            .status-badge {
+                padding: 0.25rem 0.75rem;
+                border-radius: 20px;
+                font-size: 0.8rem;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+            .status-active {
+                background: #fff3cd;
+                color: #856404;
+            }
+            .status-funded {
+                background: #d1ecf1;
+                color: #0c5460;
+            }
+            .status-completed {
+                background: #d4edda;
+                color: #155724;
+            }
+            .status-pending {
+                background: #f8d7da;
+                color: #721c24;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

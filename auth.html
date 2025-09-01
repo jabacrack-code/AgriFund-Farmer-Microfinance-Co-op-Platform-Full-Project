@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Register - AgriFund</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fas fa-seedling"></i>
+                <span>AgriFund</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="farmer-registration.html">For Farmers</a></li>
+                <li><a href="investor-dashboard.html">For Investors</a></li>
+                <li><a href="analytics.html">Analytics</a></li>
+                <li><a href="auth.html" class="btn-login">Login</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" style="min-height: 80vh; align-items: center;">
+            <div class="hero-content" style="max-width: 500px; margin: 0 auto; text-align: center;">
+                <h1>Welcome to AgriFund</h1>
+                <p>Join our community of farmers and investors working together for sustainable agriculture.</p>
+                
+                <!-- Tab Navigation -->
+                <div class="auth-tabs" style="margin: 2rem 0;">
+                    <button class="tab-btn active" id="loginTab" onclick="switchTab('login')">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                    <button class="tab-btn" id="registerTab" onclick="switchTab('register')">
+                        <i class="fas fa-user-plus"></i> Register
+                    </button>
+                </div>
+
+                <!-- Login Form -->
+                <div class="form-card auth-form" id="loginForm" style="display: block;">
+                    <h2><i class="fas fa-sign-in-alt"></i> Login to Your Account</h2>
+                    <form id="loginFormElement">
+                        <div class="form-group">
+                            <label for="loginEmail">Email Address *</label>
+                            <input type="email" id="loginEmail" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="loginPassword">Password *</label>
+                            <div style="position: relative;">
+                                <input type="password" id="loginPassword" name="password" required>
+                                <button type="button" onclick="togglePassword('loginPassword')" 
+                                        style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer;">
+                                    <i class="fas fa-eye" id="loginPasswordToggle"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="loginUserType">I am a *</label>
+                            <select id="loginUserType" name="userType" required>
+                                <option value="">Select your role</option>
+                                <option value="farmer">Farmer</option>
+                                <option value="investor">Investor</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                    </form>
+                    
+                    <div style="text-align: center; margin-top: 1rem; color: var(--light-text);">
+                        Don't have an account? 
+                        <button type="button" onclick="switchTab('register')" style="background: none; border: none; color: var(--primary-green); cursor: pointer; text-decoration: underline;">
+                            Register here
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Registration Form -->
+                <div class="form-card auth-form" id="registerForm" style="display: none;">
+                    <h2><i class="fas fa-user-plus"></i> Create Your Account</h2>
+                    <form id="registerFormElement">
+                        <div class="form-group">
+                            <label for="registerName">Full Name *</label>
+                            <input type="text" id="registerName" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="registerEmail">Email Address *</label>
+                            <input type="email" id="registerEmail" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="registerPhone">Phone Number</label>
+                            <input type="tel" id="registerPhone" name="phone" placeholder="+254 700 000 000">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="registerPassword">Password *</label>
+                            <div style="position: relative;">
+                                <input type="password" id="registerPassword" name="password" required minlength="6">
+                                <button type="button" onclick="togglePassword('registerPassword')" 
+                                        style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer;">
+                                    <i class="fas fa-eye" id="registerPasswordToggle"></i>
+                                </button>
+                            </div>
+                            <small style="color: var(--light-text);">Minimum 6 characters</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password *</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" required minlength="6">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="registerUserType">I am a *</label>
+                            <select id="registerUserType" name="userType" required>
+                                <option value="">Select your role</option>
+                                <option value="farmer">Farmer - I need funding for my farm</option>
+                                <option value="investor">Investor - I want to invest in agriculture</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" id="termsAccept" name="termsAccept" required>
+                            <label for="termsAccept" style="margin: 0; font-size: 0.9rem;">
+                                I agree to the <a href="#" style="color: var(--primary-green);">Terms of Service</a> and 
+                                <a href="#" style="color: var(--primary-green);">Privacy Policy</a> *
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i class="fas fa-user-plus"></i> Create Account
+                        </button>
+                    </form>
+                    
+                    <div style="text-align: center; margin-top: 1rem; color: var(--light-text);">
+                        Already have an account? 
+                        <button type="button" onclick="switchTab('login')" style="background: none; border: none; color: var(--primary-green); cursor: pointer; text-decoration: underline;">
+                            Login here
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Side Image -->
+            <div class="hero-image">
+                <img src="https://pixabay.com/get/ga3556c75931ae1ed8e216b8892f1611bc217c92340c9ae175fccbd876d9205572dadaa12bbb4f28bd3ad4fbf631a92b0df4cd204046e13ef1a498b8b1e95b47d_1280.jpg" alt="Farmers and investment" />
+                
+                <!-- Feature highlights -->
+                <div style="margin-top: 2rem; background: var(--white); padding: 2rem; border-radius: var(--border-radius); box-shadow: 0 10px 30px var(--shadow);">
+                    <h3 style="color: var(--primary-green); margin-bottom: 1rem;">Why Join AgriFund?</h3>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--primary-green); margin-bottom: 0.5rem;">
+                            <i class="fas fa-tractor"></i> For Farmers
+                        </h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li><i class="fas fa-check" style="color: var(--accent-green); margin-right: 0.5rem;"></i> Access to microloans</li>
+                            <li><i class="fas fa-check" style="color: var(--accent-green); margin-right: 0.5rem;"></i> Flexible repayment terms</li>
+                            <li><i class="fas fa-check" style="color: var(--accent-green); margin-right: 0.5rem;"></i> No collateral required</li>
+                            <li><i class="fas fa-check" style="color: var(--accent-green); margin-right: 0.5rem;"></i> Direct investor connection</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 style="color: var(--primary-green); margin-bottom: 0.5rem;">
+                            <i class="fas fa-chart-line"></i> For Investors
+                        </h4>
+                        <ul style="list-style: none; padding: 0;">
+                            <li><i class="fas fa-check" style="color: var(--accent-green); margin-right: 0.5rem;"></i> Competitive returns</li>
+                            <li><i class="fas fa-check" style="color: var(--accent-green); margin-right: 0.5rem;"></i> Social impact investing</li>
+                            <li><i class="fas fa-check" style="color: var(--accent-green); margin-right: 0.5rem;"></i> Risk-assessed opportunities</li>
+                            <li><i class="fas fa-check" style="color: var(--accent-green); margin-right: 0.5rem;"></i> Portfolio diversification</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Security Features -->
+        <section style="background: var(--white); padding: 3rem 0;">
+            <div class="container">
+                <h2 style="text-align: center; color: var(--primary-green); margin-bottom: 2rem;">
+                    <i class="fas fa-shield-alt"></i> Your Security is Our Priority
+                </h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                    <div style="text-align: center; padding: 2rem;">
+                        <i class="fas fa-lock" style="font-size: 2.5rem; color: var(--accent-green); margin-bottom: 1rem;"></i>
+                        <h4>Secure Authentication</h4>
+                        <p>Advanced password protection and secure login systems</p>
+                    </div>
+                    
+                    <div style="text-align: center; padding: 2rem;">
+                        <i class="fas fa-user-shield" style="font-size: 2.5rem; color: var(--accent-green); margin-bottom: 1rem;"></i>
+                        <h4>Identity Verification</h4>
+                        <p>All farmers and investors go through verification processes</p>
+                    </div>
+                    
+                    <div style="text-align: center; padding: 2rem;">
+                        <i class="fas fa-chart-bar" style="font-size: 2.5rem; color: var(--accent-green); margin-bottom: 1rem;"></i>
+                        <h4>Risk Assessment</h4>
+                        <p>Data-driven credit scoring and risk evaluation</p>
+                    </div>
+                    
+                    <div style="text-align: center; padding: 2rem;">
+                        <i class="fas fa-handshake" style="font-size: 2.5rem; color: var(--accent-green); margin-bottom: 1rem;"></i>
+                        <h4>Transparent Process</h4>
+                        <p>Clear terms, progress tracking, and regular updates</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <i class="fas fa-seedling"></i>
+                    <span>AgriFund</span>
+                    <p>Connecting farmers and investors for sustainable agriculture</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="farmer-registration.html">For Farmers</a></li>
+                        <li><a href="investor-dashboard.html">For Investors</a></li>
+                        <li><a href="analytics.html">Analytics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> info@agrifund.ke</p>
+                    <p><i class="fas fa-phone"></i> +254 700 000 000</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 AgriFund. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Authentication page specific functionality
+        
+        function switchTab(tabName) {
+            // Hide all forms
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'none';
+            
+            // Remove active class from all tabs
+            document.getElementById('loginTab').classList.remove('active');
+            document.getElementById('registerTab').classList.remove('active');
+            
+            // Show selected form and activate tab
+            if (tabName === 'login') {
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('loginTab').classList.add('active');
+            } else {
+                document.getElementById('registerForm').style.display = 'block';
+                document.getElementById('registerTab').classList.add('active');
+            }
+        }
+        
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const toggle = document.getElementById(fieldId + 'Toggle');
+            
+            if (field.type === 'password') {
+                field.type = 'text';
+                toggle.classList.remove('fa-eye');
+                toggle.classList.add('fa-eye-slash');
+            } else {
+                field.type = 'password';
+                toggle.classList.remove('fa-eye-slash');
+                toggle.classList.add('fa-eye');
+            }
+        }
+        
+        // Form validation
+        document.getElementById('registerFormElement').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const email = document.getElementById('registerEmail').value;
+            const name = document.getElementById('registerName').value;
+            const userType = document.getElementById('registerUserType').value;
+            const termsAccept = document.getElementById('termsAccept').checked;
+            
+            // Validation
+            if (!name.trim()) {
+                window.agrifund.showAlert('Please enter your full name.', 'error');
+                return;
+            }
+            
+            if (!window.agrifund.validateEmail(email)) {
+                window.agrifund.showAlert('Please enter a valid email address.', 'error');
+                return;
+            }
+            
+            if (password.length < 6) {
+                window.agrifund.showAlert('Password must be at least 6 characters long.', 'error');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                window.agrifund.showAlert('Passwords do not match.', 'error');
+                return;
+            }
+            
+            if (!userType) {
+                window.agrifund.showAlert('Please select your role (Farmer or Investor).', 'error');
+                return;
+            }
+            
+            if (!termsAccept) {
+                window.agrifund.showAlert('Please accept the Terms of Service and Privacy Policy.', 'error');
+                return;
+            }
+            
+            // Submit the form if all validations pass
+            window.agrifund.handleUserRegistration(e);
+        });
+        
+        // Email validation on input
+        document.getElementById('registerEmail').addEventListener('blur', function() {
+            const email = this.value;
+            if (email && !window.agrifund.validateEmail(email)) {
+                this.style.borderColor = '#dc3545';
+                window.agrifund.showAlert('Please enter a valid email address.', 'error');
+            } else if (email) {
+                this.style.borderColor = '#28a745';
+            }
+        });
+        
+        // Password strength indicator
+        document.getElementById('registerPassword').addEventListener('input', function() {
+            const password = this.value;
+            const strengthIndicator = document.getElementById('passwordStrength') || createPasswordStrengthIndicator();
+            
+            let strength = 0;
+            let strengthText = '';
+            let strengthColor = '';
+            
+            if (password.length >= 6) strength++;
+            if (password.match(/[a-z]/)) strength++;
+            if (password.match(/[A-Z]/)) strength++;
+            if (password.match(/[0-9]/)) strength++;
+            if (password.match(/[^a-zA-Z0-9]/)) strength++;
+            
+            switch (strength) {
+                case 0:
+                case 1:
+                    strengthText = 'Weak';
+                    strengthColor = '#dc3545';
+                    break;
+                case 2:
+                case 3:
+                    strengthText = 'Medium';
+                    strengthColor = '#ffc107';
+                    break;
+                case 4:
+                case 5:
+                    strengthText = 'Strong';
+                    strengthColor = '#28a745';
+                    break;
+            }
+            
+            strengthIndicator.textContent = password ? `Password strength: ${strengthText}` : '';
+            strengthIndicator.style.color = strengthColor;
+        });
+        
+        function createPasswordStrengthIndicator() {
+            const indicator = document.createElement('small');
+            indicator.id = 'passwordStrength';
+            indicator.style.display = 'block';
+            indicator.style.marginTop = '0.25rem';
+            
+            const passwordField = document.getElementById('registerPassword');
+            passwordField.parentNode.appendChild(indicator);
+            
+            return indicator;
+        }
+        
+        // Real-time form validation
+        function addRealTimeValidation() {
+            const inputs = document.querySelectorAll('input[required], select[required]');
+            
+            inputs.forEach(input => {
+                input.addEventListener('blur', function() {
+                    if (!this.value.trim()) {
+                        this.style.borderColor = '#dc3545';
+                    } else {
+                        this.style.borderColor = '#28a745';
+                    }
+                });
+                
+                input.addEventListener('input', function() {
+                    if (this.style.borderColor === 'rgb(220, 53, 69)' && this.value.trim()) {
+                        this.style.borderColor = '#28a745';
+                    }
+                });
+            });
+        }
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is already logged in
+            if (window.agrifund && window.agrifund.currentUser) {
+                const userType = window.agrifund.currentUser.type;
+                if (userType === 'farmer') {
+                    window.location.href = 'farmer-registration.html';
+                } else if (userType === 'investor') {
+                    window.location.href = 'investor-dashboard.html';
+                }
+            }
+            
+            addRealTimeValidation();
+            
+            // Auto-focus on first input
+            document.getElementById('loginEmail').focus();
+            
+            // Handle URL parameters for tab switching
+            const urlParams = new URLSearchParams(window.location.search);
+            const tab = urlParams.get('tab');
+            if (tab === 'register') {
+                switchTab('register');
+            }
+        });
+    </script>
+    
+    <style>
+        /* Authentication specific styles */
+        .auth-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 2px 10px var(--shadow);
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 1rem 2rem;
+            border: none;
+            background: var(--white);
+            color: var(--dark-text);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+        
+        .tab-btn:hover {
+            background: var(--cream);
+        }
+        
+        .tab-btn.active {
+            background: var(--primary-green);
+            color: var(--white);
+        }
+        
+        .auth-form {
+            margin: 0;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(45, 90, 39, 0.1);
+        }
+        
+        .form-group input.valid {
+            border-color: #28a745;
+        }
+        
+        .form-group input.invalid {
+            border-color: #dc3545;
+        }
+        
+        /* Mobile responsive adjustments */
+        @media (max-width: 768px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 2rem 1rem;
+            }
+            
+            .auth-tabs {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                padding: 0.8rem 1rem;
+            }
+        }
+    </style>
+</body>
+</html>
