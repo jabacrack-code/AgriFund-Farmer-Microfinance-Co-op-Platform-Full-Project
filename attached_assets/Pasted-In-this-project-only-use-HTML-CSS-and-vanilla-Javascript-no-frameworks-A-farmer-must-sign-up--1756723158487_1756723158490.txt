@@ -1,0 +1,161 @@
+In this project only use HTML, CSS and vanilla Javascript.  no frameworks.....A farmer must sign up..an investor will not sign up........................................................................................AgriFund Pitch Deck
+
+Title Slide
+AgriFund – “Invest in Farmers. Grow Food, Grow Wealth.”
+Logo, tagline, and visuals of farmers + investors.
+
+Problem
+
+66% of farmers cite high cost of inputs as a major challenge
+.
+
+Less than 40% of farmers access credit
+.
+
+Heavy reliance on brokers → farmers lose up to 30% of potential income
+.
+
+Result: farmers lack working capital → food shortages, unstable prices.
+
+Solution
+AgriFund: A crowdfunding platform that connects investors to farmers.
+
+Farmers get microloans repayable after harvest.
+
+Investors earn interest + social impact returns.
+
+Product (Platform Demo)
+Mobile & web app.
+
+Key features:
+
+Farmer profiles & credit scoring
+
+Loan investment dashboard for investors
+
+Repayment tracking with harvest cycles
+
+Impact metrics (food grown, households fed).
+
+Target Market
+5 million smallholder farmers in Kenya (majority <5 acres)
+.
+
+Growing global impact investment market ($715B+).
+
+Urban middle-class investors looking for ethical investment opportunities.
+
+Market Size (TAM, SAM, SOM)
+TAM: $10B (East Africa’s agricultural financing gap).
+
+SAM: $2.5B (Kenyan smallholder farmers).
+
+SOM: $250M (first 5 years with 10% market capture).
+
+Competitors
+Traditional banks (high collateral, high rates).
+
+SACCOs & MFIs (limited scale).
+
+Digital lenders (short-term, high interest).
+
+No direct farmer–investor marketplace with repayment-after-harvest model.
+
+Competitive Advantage
+Unique repayment model tied to harvest cycles.
+
+Data-driven farmer scoring (satellite, soil, yield history).
+
+Commission-based + premium dashboards for investors.
+
+Alignment with government push for agriculture financing & food security
+.
+
+Traction & Roadmap
+MVP tested with 200 farmers in Kiambu & Nakuru.
+
+90% repayment success rate in pilot.
+
+Partnerships with 2 farmer cooperatives.
+
+Roadmap: expand to 10 counties in 18 months → pan-East Africa in 5 years.
+
+Business Model
+5% commission on loans facilitated.
+
+Premium investor analytics dashboard ($20/month).
+
+Partnership revenue (input suppliers, insurance add-ons).
+
+Go-To-Market Strategy
+Partner with farmer cooperatives & county governments.
+
+Digital marketing targeting diaspora & ethical investors.
+
+Use agri-survey data for localized farmer financing
+.
+
+Our Ask
+Seeking $2M for 12% equity.
+
+Use of funds:
+
+40% tech development & security
+
+30% farmer recruitment & cooperatives
+
+20% marketing to investors
+
+10% compliance & risk management
+
+Team
+Founder/CEO: Kelvin Maina (Data Analyst, Fintech + AgriTech).
+
+CTO: Experienced fintech engineer.
+
+Head of Agriculture: Ex-Ministry of Agriculture officer.
+
+Partnerships Lead: Co-op and SACCO network specialist......................................🔹 1. Basic Structure of the App
+
+Prompt:
+"Generate an HTML, CSS, and JavaScript template for a crowdfunding platform called AgriFund. It should include: a homepage, farmer registration form, investor dashboard, and loan tracking page. Use responsive design and a clean, modern layout."
+
+🔹 2. Farmer Registration & Loan Request
+
+Prompt:
+"Write HTML and JavaScript code for a farmer registration form that captures name, farm size, location, type of crop, and loan amount requested. Store data in a JSON object and validate inputs (required fields, numeric values for loan)."
+
+🔹 3. Investor Dashboard
+
+Prompt:
+"Generate JavaScript code to display a list of farmers seeking funding in a dashboard. Each farmer card should show their name, crop, requested loan, and repayment timeline. Add a button for investors to contribute."
+
+🔹 4. Loan Crowdfunding Logic
+
+Prompt:
+"Write JavaScript logic that allows multiple investors to contribute to a farmer’s loan request until it reaches the target. Once funded, mark the request as ‘Funded’. Store contributions in a JSON object."
+
+🔹 5. Repayment & Tracking
+
+Prompt:
+"Create a repayment tracker in JavaScript where farmers can update repayment progress. Show investors repayment percentage and remaining balance on their dashboard."
+
+🔹 6. AI Integration for Farmer Scoring
+
+Prompt:
+"Write a JavaScript function that takes farmer input data (farm size, crop type, loan history, repayment history) and sends it to an AI API (mock or real) for risk scoring. Display the returned score on the investor dashboard."
+
+🔹 7. Analytics Dashboard for Investors
+
+Prompt:
+"Generate JavaScript and Chart.js code to create an investor analytics dashboard. Include: total invested amount, average repayment rate, and impact (number of farmers funded, acres supported)."
+
+🔹 8. Styling
+
+Prompt:
+"Write a modern CSS style for the AgriFund platform. Use green and earthy tones, rounded buttons, card layouts, and responsive grids for farmer and investor sections."
+
+🔹 9. Security & Validation
+
+Prompt:
+"Add JavaScript form validation and simple local storage authentication (username + password) for farmers and investors. Ensure input sanitization to prevent script injection."
