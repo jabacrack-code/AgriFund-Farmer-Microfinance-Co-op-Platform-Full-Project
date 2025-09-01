@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Monitoring - AgriFund</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fas fa-seedling"></i>
+                <span>AgriFund</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="farmer-registration.html">For Farmers</a></li>
+                <li><a href="investor-dashboard.html">For Investors</a></li>
+                <li><a href="analytics.html">Analytics</a></li>
+                <li><a href="farm-monitoring.html">Farm Monitoring</a></li>
+                <li><a href="auth.html" class="btn-login">Login</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="dashboard-header">
+            <div class="container">
+                <h1><i class="fas fa-clipboard-check"></i> Farm Monitoring & Due Diligence</h1>
+                <p>Bi-weekly progress tracking and farm recommendations</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <!-- Monitoring Schedule -->
+            <div class="dashboard-stats">
+                <div class="stat-card-small">
+                    <h3 id="pendingMonitoring">0</h3>
+                    <p>Pending Monitoring</p>
+                </div>
+                <div class="stat-card-small">
+                    <h3 id="completedMonitoring">0</h3>
+                    <p>Completed This Month</p>
+                </div>
+                <div class="stat-card-small">
+                    <h3 id="farmsWithIssues">0</h3>
+                    <p>Farms Needing Attention</p>
+                </div>
+                <div class="stat-card-small">
+                    <h3 id="avgFarmScore">0</h3>
+                    <p>Average Farm Health Score</p>
+                </div>
+            </div>
+
+            <!-- Monitoring Schedule -->
+            <section>
+                <div class="card">
+                    <h2><i class="fas fa-calendar-alt"></i> Bi-Weekly Monitoring Schedule</h2>
+                    <div class="card-grid" id="monitoringSchedule">
+                        <!-- Schedule will be populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Farm Progress Reports -->
+            <section>
+                <h2><i class="fas fa-chart-line"></i> Farm Progress Reports</h2>
+                
+                <!-- Filter Controls -->
+                <div class="card" style="margin-bottom: 2rem;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <div class="form-group">
+                            <label for="statusFilter">Filter by Status:</label>
+                            <select id="statusFilter">
+                                <option value="">All Farms</option>
+                                <option value="excellent">Excellent Progress</option>
+                                <option value="good">Good Progress</option>
+                                <option value="needs-attention">Needs Attention</option>
+                                <option value="at-risk">At Risk</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cropFilter">Filter by Crop:</label>
+                            <select id="cropFilter">
+                                <option value="">All Crops</option>
+                                <option value="maize">Maize</option>
+                                <option value="beans">Beans</option>
+                                <option value="potatoes">Potatoes</option>
+                                <option value="tomatoes">Tomatoes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="regionFilter">Filter by Region:</label>
+                            <select id="regionFilter">
+                                <option value="">All Regions</option>
+                                <option value="Kiambu">Kiambu</option>
+                                <option value="Nakuru">Nakuru</option>
+                                <option value="Uasin Gishu">Uasin Gishu</option>
+                                <option value="Meru">Meru</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-grid" id="farmProgressReports">
+                    <!-- Progress reports will be populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Recommendations Panel -->
+            <section>
+                <div class="card">
+                    <h2><i class="fas fa-lightbulb"></i> AI-Generated Farm Recommendations</h2>
+                    <div id="farmRecommendations">
+                        <!-- Recommendations will be populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Submit Monitoring Report -->
+            <section id="submitReportSection" style="display: none;">
+                <div class="card">
+                    <h2><i class="fas fa-plus-circle"></i> Submit Monitoring Report</h2>
+                    <form id="monitoringReportForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="farmSelect">Select Farm *</label>
+                                <select id="farmSelect" name="farmId" required>
+                                    <option value="">Choose a farm to monitor</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="monitoringDate">Monitoring Date *</label>
+                                <input type="date" id="monitoringDate" name="monitoringDate" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="cropHealth">Crop Health Score (1-10) *</label>
+                                <input type="number" id="cropHealth" name="cropHealth" min="1" max="10" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="soilCondition">Soil Condition Score (1-10) *</label>
+                                <input type="number" id="soilCondition" name="soilCondition" min="1" max="10" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="irrigationStatus">Irrigation Status</label>
+                                <select id="irrigationStatus" name="irrigationStatus">
+                                    <option value="excellent">Excellent</option>
+                                    <option value="good">Good</option>
+                                    <option value="adequate">Adequate</option>
+                                    <option value="poor">Poor</option>
+                                    <option value="none">No Irrigation</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="pestControl">Pest Control Status</label>
+                                <select id="pestControl" name="pestControl">
+                                    <option value="excellent">Excellent</option>
+                                    <option value="good">Good</option>
+                                    <option value="adequate">Adequate</option>
+                                    <option value="needs-improvement">Needs Improvement</option>
+                                    <option value="poor">Poor</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="observations">Field Observations *</label>
+                            <textarea id="observations" name="observations" rows="4" required 
+                                placeholder="Document current crop status, any issues observed, farmer adherence to best practices, etc."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="recommendations">Recommendations for Farmer</label>
+                            <textarea id="recommendations" name="recommendations" rows="3" 
+                                placeholder="Specific recommendations for improving yield, addressing issues, or optimizing practices"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nextVisitDate">Next Monitoring Visit</label>
+                            <input type="date" id="nextVisitDate" name="nextVisitDate">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Submit Monitoring Report
+                        </button>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <i class="fas fa-seedling"></i>
+                    <span>AgriFund</span>
+                    <p>Connecting farmers and investors for sustainable agriculture</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="farmer-registration.html">For Farmers</a></li>
+                        <li><a href="investor-dashboard.html">For Investors</a></li>
+                        <li><a href="analytics.html">Analytics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> info@agrifund.ke</p>
+                    <p><i class="fas fa-phone"></i> +254 700 000 000</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 AgriFund. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Farm Monitoring specific functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFarmMonitoringData();
+            initializeMonitoringForm();
+            
+            // Add filter functionality
+            const statusFilter = document.getElementById('statusFilter');
+            const cropFilter = document.getElementById('cropFilter');
+            const regionFilter = document.getElementById('regionFilter');
+            
+            [statusFilter, cropFilter, regionFilter].forEach(filter => {
+                filter.addEventListener('change', applyMonitoringFilters);
+            });
+        });
+
+        function loadFarmMonitoringData() {
+            if (!window.agrifund) return;
+            
+            const farmers = window.agrifund.getFarmers();
+            const monitoringReports = getMonitoringReports();
+            
+            // Update monitoring stats
+            updateMonitoringStats(farmers, monitoringReports);
+            
+            // Display monitoring schedule
+            displayMonitoringSchedule(farmers, monitoringReports);
+            
+            // Display farm progress reports
+            displayFarmProgressReports(farmers, monitoringReports);
+            
+            // Generate recommendations
+            generateFarmRecommendations(farmers, monitoringReports);
+            
+            // Check if user has monitoring permissions
+            if (window.agrifund.currentUser && (window.agrifund.currentUser.type === 'admin' || window.agrifund.currentUser.type === 'monitor')) {
+                document.getElementById('submitReportSection').style.display = 'block';
+                populateFarmSelect(farmers);
+            }
+        }
+
+        function updateMonitoringStats(farmers, reports) {
+            const fundedFarms = farmers.filter(f => f.status === 'funded' || f.status === 'completed');
+            const currentDate = new Date();
+            const twoWeeksAgo = new Date(currentDate.getTime() - (14 * 24 * 60 * 60 * 1000));
+            
+            const recentReports = reports.filter(r => new Date(r.date) >= twoWeeksAgo);
+            const pendingMonitoring = fundedFarms.length - recentReports.length;
+            
+            const farmsWithIssues = reports.filter(r => {
+                const healthScore = (r.cropHealth + r.soilCondition) / 2;
+                return healthScore < 6;
+            }).length;
+            
+            const avgScore = reports.length > 0 ? 
+                reports.reduce((sum, r) => sum + ((r.cropHealth + r.soilCondition) / 2), 0) / reports.length : 0;
+            
+            document.getElementById('pendingMonitoring').textContent = Math.max(0, pendingMonitoring);
+            document.getElementById('completedMonitoring').textContent = recentReports.length;
+            document.getElementById('farmsWithIssues').textContent = farmsWithIssues;
+            document.getElementById('avgFarmScore').textContent = avgScore.toFixed(1);
+        }
+
+        function displayMonitoringSchedule(farmers, reports) {
+            const fundedFarms = farmers.filter(f => f.status === 'funded' || f.status === 'completed');
+            const scheduleContainer = document.getElementById('monitoringSchedule');
+            
+            if (fundedFarms.length === 0) {
+                scheduleContainer.innerHTML = `
+                    <div class="card">
+                        <p style="text-align: center; color: var(--light-text);">
+                            No funded farms to monitor yet.
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+            
+            const scheduleItems = fundedFarms.map(farm => {
+                const lastReport = reports
+                    .filter(r => r.farmId === farm.id)
+                    .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+                
+                const fundingDate = new Date(farm.createdAt);
+                const daysSinceFunding = Math.floor((new Date() - fundingDate) / (1000 * 60 * 60 * 24));
+                const daysSinceLastReport = lastReport ? 
+                    Math.floor((new Date() - new Date(lastReport.date)) / (1000 * 60 * 60 * 24)) : daysSinceFunding;
+                
+                const nextVisitDue = daysSinceLastReport >= 14;
+                const isOverdue = daysSinceLastReport > 16;
+                
+                return {
+                    farm,
+                    lastReport,
+                    daysSinceLastReport,
+                    nextVisitDue,
+                    isOverdue,
+                    priority: isOverdue ? 'high' : nextVisitDue ? 'medium' : 'low'
+                };
+            });
+            
+            // Sort by priority
+            scheduleItems.sort((a, b) => {
+                const priorityOrder = { high: 3, medium: 2, low: 1 };
+                return priorityOrder[b.priority] - priorityOrder[a.priority];
+            });
+            
+            scheduleContainer.innerHTML = scheduleItems.map(item => `
+                <div class="card monitoring-card priority-${item.priority}">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h3>${item.farm.farmerName}</h3>
+                        <span class="priority-badge priority-${item.priority}">
+                            ${item.priority.toUpperCase()} PRIORITY
+                        </span>
+                    </div>
+                    
+                    <div class="farmer-info">
+                        <div><strong>Crop:</strong> ${item.farm.cropType}</div>
+                        <div><strong>Location:</strong> ${item.farm.location}</div>
+                        <div><strong>Farm Size:</strong> ${item.farm.farmSize} acres</div>
+                        <div><strong>Funding Date:</strong> ${window.agrifund.formatDate(item.farm.createdAt)}</div>
+                    </div>
+                    
+                    <div style="margin: 1rem 0; padding: 1rem; background: var(--cream); border-radius: 8px;">
+                        <div><strong>Last Monitoring:</strong> ${item.lastReport ? window.agrifund.formatDate(item.lastReport.date) : 'Never'}</div>
+                        <div><strong>Days Since Last Visit:</strong> ${item.daysSinceLastReport} days</div>
+                        ${item.lastReport ? `
+                            <div><strong>Last Health Score:</strong> ${((item.lastReport.cropHealth + item.lastReport.soilCondition) / 2).toFixed(1)}/10</div>
+                        ` : ''}
+                    </div>
+                    
+                    ${item.nextVisitDue ? `
+                        <div class="alert alert-${item.isOverdue ? 'error' : 'info'}" style="margin: 1rem 0;">
+                            <i class="fas fa-${item.isOverdue ? 'exclamation-triangle' : 'clock'}"></i>
+                            ${item.isOverdue ? 'Monitoring overdue!' : 'Monitoring visit due soon'}
+                        </div>
+                    ` : ''}
+                    
+                    <button class="btn btn-primary" onclick="scheduleMonitoring('${item.farm.id}')">
+                        <i class="fas fa-calendar-plus"></i> Schedule Visit
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function displayFarmProgressReports(farmers, reports) {
+            const container = document.getElementById('farmProgressReports');
+            
+            if (reports.length === 0) {
+                container.innerHTML = `
+                    <div class="card">
+                        <p style="text-align: center; color: var(--light-text);">
+                            No monitoring reports available yet.
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Group reports by farm
+            const farmReports = reports.reduce((acc, report) => {
+                if (!acc[report.farmId]) {
+                    acc[report.farmId] = [];
+                }
+                acc[report.farmId].push(report);
+                return acc;
+            }, {});
+            
+            container.innerHTML = Object.entries(farmReports).map(([farmId, farmReports]) => {
+                const farm = farmers.find(f => f.id === farmId);
+                if (!farm) return '';
+                
+                const latestReport = farmReports.sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+                const healthScore = (latestReport.cropHealth + latestReport.soilCondition) / 2;
+                const healthStatus = healthScore >= 8 ? 'excellent' : healthScore >= 6 ? 'good' : healthScore >= 4 ? 'needs-attention' : 'at-risk';
+                
+                return `
+                    <div class="card farm-progress-card" data-status="${healthStatus}" data-crop="${farm.cropType}" data-region="${farm.location}">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                            <h3>${farm.farmerName}</h3>
+                            <span class="health-badge health-${healthStatus}">
+                                ${healthStatus.replace('-', ' ').toUpperCase()}
+                            </span>
+                        </div>
+                        
+                        <div class="farmer-info">
+                            <div><strong>Crop:</strong> ${farm.cropType}</div>
+                            <div><strong>Location:</strong> ${farm.location}</div>
+                            <div><strong>Farm Size:</strong> ${farm.farmSize} acres</div>
+                            <div><strong>Last Visit:</strong> ${window.agrifund.formatDate(latestReport.date)}</div>
+                        </div>
+                        
+                        <div style="margin: 1rem 0;">
+                            <h4>Latest Health Scores</h4>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem;">
+                                <div style="text-align: center; padding: 0.5rem; background: var(--cream); border-radius: 8px;">
+                                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary-green);">${latestReport.cropHealth}/10</div>
+                                    <div style="font-size: 0.9rem;">Crop Health</div>
+                                </div>
+                                <div style="text-align: center; padding: 0.5rem; background: var(--cream); border-radius: 8px;">
+                                    <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary-green);">${latestReport.soilCondition}/10</div>
+                                    <div style="font-size: 0.9rem;">Soil Condition</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin: 1rem 0;">
+                            <h4>Field Observations</h4>
+                            <p style="background: var(--cream); padding: 1rem; border-radius: 8px; margin-top: 0.5rem; font-style: italic;">
+                                "${latestReport.observations}"
+                            </p>
+                        </div>
+                        
+                        ${latestReport.recommendations ? `
+                            <div style="margin: 1rem 0;">
+                                <h4>Current Recommendations</h4>
+                                <div style="background: #e8f4f8; padding: 1rem; border-radius: 8px; border-left: 4px solid var(--accent-green);">
+                                    ${latestReport.recommendations}
+                                </div>
+                            </div>
+                        ` : ''}
+                        
+                        <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--light-text);">
+                            <div><strong>Total Reports:</strong> ${farmReports.length}</div>
+                            <div><strong>Monitoring Frequency:</strong> Every 2 weeks</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function generateFarmRecommendations(farmers, reports) {
+            const container = document.getElementById('farmRecommendations');
+            
+            // Generate recommendations based on common issues
+            const recommendations = [
+                {
+                    title: "Improve Irrigation Efficiency",
+                    description: "Farms with poor irrigation scores should consider drip irrigation systems to reduce water waste and improve crop yield.",
+                    applicableFarms: reports.filter(r => r.irrigationStatus === 'poor' || r.irrigationStatus === 'adequate').length,
+                    priority: "high",
+                    icon: "fas fa-tint"
+                },
+                {
+                    title: "Integrated Pest Management",
+                    description: "Implement IPM strategies combining biological, cultural, and chemical controls for sustainable pest management.",
+                    applicableFarms: reports.filter(r => r.pestControl === 'needs-improvement' || r.pestControl === 'poor').length,
+                    priority: "medium",
+                    icon: "fas fa-bug"
+                },
+                {
+                    title: "Soil Health Enhancement",
+                    description: "Regular soil testing and organic matter addition can significantly improve soil condition scores.",
+                    applicableFarms: reports.filter(r => r.soilCondition < 6).length,
+                    priority: "high",
+                    icon: "fas fa-mountain"
+                },
+                {
+                    title: "Crop Rotation Planning",
+                    description: "Implement crop rotation to improve soil fertility and reduce pest pressure for better yields.",
+                    applicableFarms: farmers.filter(f => f.experience < 5).length,
+                    priority: "medium",
+                    icon: "fas fa-sync-alt"
+                }
+            ];
+            
+            container.innerHTML = recommendations
+                .filter(rec => rec.applicableFarms > 0)
+                .map(rec => `
+                    <div class="card recommendation-card priority-${rec.priority}" style="margin-bottom: 1rem;">
+                        <div style="display: flex; align-items: start; gap: 1rem;">
+                            <div style="font-size: 2rem; color: var(--accent-green);">
+                                <i class="${rec.icon}"></i>
+                            </div>
+                            <div style="flex: 1;">
+                                <h3 style="color: var(--primary-green); margin-bottom: 0.5rem;">
+                                    ${rec.title}
+                                    <span class="priority-badge priority-${rec.priority}" style="font-size: 0.7rem; margin-left: 1rem;">
+                                        ${rec.priority.toUpperCase()}
+                                    </span>
+                                </h3>
+                                <p style="margin-bottom: 1rem;">${rec.description}</p>
+                                <div style="font-size: 0.9rem; color: var(--light-text);">
+                                    <i class="fas fa-farm"></i> Applicable to ${rec.applicableFarms} farms
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        function getMonitoringReports() {
+            return JSON.parse(localStorage.getItem('agrifund_monitoring_reports')) || [];
+        }
+
+        function saveMonitoringReports(reports) {
+            localStorage.setItem('agrifund_monitoring_reports', JSON.stringify(reports));
+        }
+
+        function populateFarmSelect(farmers) {
+            const fundedFarms = farmers.filter(f => f.status === 'funded' || f.status === 'completed');
+            const farmSelect = document.getElementById('farmSelect');
+            
+            farmSelect.innerHTML = '<option value="">Choose a farm to monitor</option>' + 
+                fundedFarms.map(farm => `
+                    <option value="${farm.id}">${farm.farmerName} - ${farm.cropType} (${farm.location})</option>
+                `).join('');
+        }
+
+        function initializeMonitoringForm() {
+            const form = document.getElementById('monitoringReportForm');
+            if (!form) return;
+            
+            // Set default date to today
+            document.getElementById('monitoringDate').valueAsDate = new Date();
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(e.target);
+                const report = {
+                    id: window.agrifund.generateId(),
+                    farmId: formData.get('farmId'),
+                    date: formData.get('monitoringDate'),
+                    cropHealth: parseInt(formData.get('cropHealth')),
+                    soilCondition: parseInt(formData.get('soilCondition')),
+                    irrigationStatus: formData.get('irrigationStatus'),
+                    pestControl: formData.get('pestControl'),
+                    observations: formData.get('observations'),
+                    recommendations: formData.get('recommendations'),
+                    nextVisitDate: formData.get('nextVisitDate'),
+                    monitoredBy: window.agrifund.currentUser?.name || 'System',
+                    createdAt: new Date().toISOString()
+                };
+                
+                const reports = getMonitoringReports();
+                reports.push(report);
+                saveMonitoringReports(reports);
+                
+                window.agrifund.showAlert('Monitoring report submitted successfully!', 'success');
+                e.target.reset();
+                
+                // Refresh the page to show updated data
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            });
+        }
+
+        function scheduleMonitoring(farmId) {
+            const farm = window.agrifund.getFarmers().find(f => f.id === farmId);
+            if (!farm) return;
+            
+            window.agrifund.showAlert(`Monitoring visit scheduled for ${farm.farmerName}'s farm. Field agent will be notified.`, 'success');
+        }
+
+        function applyMonitoringFilters() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const cropFilter = document.getElementById('cropFilter').value;
+            const regionFilter = document.getElementById('regionFilter').value;
+            
+            const progressCards = document.querySelectorAll('.farm-progress-card');
+            
+            progressCards.forEach(card => {
+                let show = true;
+                
+                if (statusFilter && !card.dataset.status.includes(statusFilter)) {
+                    show = false;
+                }
+                
+                if (cropFilter && !card.dataset.crop.toLowerCase().includes(cropFilter.toLowerCase())) {
+                    show = false;
+                }
+                
+                if (regionFilter && !card.dataset.region.includes(regionFilter)) {
+                    show = false;
+                }
+                
+                card.style.display = show ? 'block' : 'none';
+            });
+        }
+
+        // Add CSS for monitoring specific styles
+        const style = document.createElement('style');
+        style.textContent = `
+            .monitoring-card {
+                border-left: 4px solid transparent;
+            }
+            .priority-high {
+                border-left-color: #dc3545 !important;
+            }
+            .priority-medium {
+                border-left-color: #ffc107 !important;
+            }
+            .priority-low {
+                border-left-color: #28a745 !important;
+            }
+            .priority-badge {
+                padding: 0.25rem 0.5rem;
+                border-radius: 12px;
+                font-size: 0.7rem;
+                font-weight: bold;
+            }
+            .priority-high.priority-badge {
+                background: #f8d7da;
+                color: #721c24;
+            }
+            .priority-medium.priority-badge {
+                background: #fff3cd;
+                color: #856404;
+            }
+            .priority-low.priority-badge {
+                background: #d4edda;
+                color: #155724;
+            }
+            .health-badge {
+                padding: 0.25rem 0.75rem;
+                border-radius: 20px;
+                font-size: 0.8rem;
+                font-weight: bold;
+            }
+            .health-excellent {
+                background: #d4edda;
+                color: #155724;
+            }
+            .health-good {
+                background: #d1ecf1;
+                color: #0c5460;
+            }
+            .health-needs-attention {
+                background: #fff3cd;
+                color: #856404;
+            }
+            .health-at-risk {
+                background: #f8d7da;
+                color: #721c24;
+            }
+            .recommendation-card {
+                border-left: 4px solid var(--accent-green);
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
